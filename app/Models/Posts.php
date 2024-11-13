@@ -7,16 +7,26 @@ use Illuminate\Database\Eloquent\Model;
 
 class Posts extends Model
 {
-    protected $table = 'posts';
-    protected $fillable = ['judul', 'kategori_id', 'isi', 'petugas_id', 'status'];
+    use HasFactory;
 
+    protected $fillable = [
+        'gallery_id',
+        'judul',
+        'kategori_id',
+        'isi',
+        'petugas_id',
+        'status',
+    ];
+
+    // Relasi dengan model Gallery
+    public function galery()
+    {
+        return $this->belongsTo(Galery::class);
+    }
+
+    // Relasi dengan model Category
     public function kategori()
     {
         return $this->belongsTo(Kategori::class);
-    }
-
-    public function galleries()
-    {
-        return $this->hasMany(Gallery::class);
     }
 }

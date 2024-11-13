@@ -39,6 +39,51 @@ class FotoController extends Controller
         return redirect()->route('Vgalery.show', $request->galery_id)->with('success', 'Foto berhasil di-upload.');
     }
 
+    public function edit($id)
+{
+    // Find the photo by ID
+    $foto = Foto::findOrFail($id);
+    $galeries = Galery::all();
+    $galeries = Galery::all(); // Retrieve all galleries if you want to allow users to select a different gallery
+
+    // Return the edit view and pass the photo data
+    return view('Vfoto.edit', compact('foto', 'galeries'));
+}
+
+public function update(Request $request, $id)
+{
+    $foto = Foto::findOrFail($id);
+
+    // Validasi data yang diterima
+    $request->validate([
+        'judul' => 'required|string|max:255',
+        'file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ]);
+
+    // Update judul
+    $foto->judul = $request->judul;
+
+    // Jika ada file yang diupload, upload file baru
+    if ($request->hasFile('file')) {
+        // Menghapus file lama jika ada
+        if ($foto->file && file_exists(public_path('uploads/galeri/' . $foto->file))) {
+            unlink(public_path('uploads/galeri/' . $foto->file));
+        }
+
+        // Menyimpan file baru
+        $file = $request->file('file');
+        $filename = time() . '.' . $file->getClientOriginalExtension();
+        $file->move(public_path('uploads/galeri'), $filename);
+        $foto->file = $filename;
+    }
+
+    $foto->save();
+
+    return redirect()->route('Vgalery.show', $foto->galery_id)->with('success', 'Foto berhasil diperbarui!');
+}
+
+
+
     public function destroy($id)
 {
     // Temukan foto berdasarkan ID

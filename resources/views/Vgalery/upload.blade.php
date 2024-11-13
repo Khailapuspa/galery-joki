@@ -54,76 +54,140 @@
                 </div>
             </div>
 
-           <!-- Modal untuk melihat foto besar dan tombol hapus -->
-            <div class="modal fade" id="viewFotoModal" tabindex="-1" aria-labelledby="viewFotoModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="viewFotoModalLabel">Lihat Foto</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body text-center">
-                            <img id="modalImage" src="" alt="Foto Besar" class="img-fluid" style="max-width: 90%; max-height: 500px;">
-                            <!-- Form Delete -->
-                            <form id="deleteFotoForm" action="#" method="POST" class="mt-3">
+           <!-- Modal untuk melihat foto besar, tombol hapus, dan edit -->
+           <div class="modal fade" id="viewFotoModal" tabindex="-1" aria-labelledby="viewFotoModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewFotoModalLabel">Lihat Foto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img id="modalImage" src="" alt="Foto Besar" class="img-fluid" style="max-width: 90%; max-height: 500px;">
+                        <div class="d-flex justify-content-center mt-3">
+                            {{-- <!-- Form Delete -->
+                            <form id="deleteFotoForm" action="#" method="POST" class="me-2">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">
                                     <i class="fas fa-trash-alt"></i> Hapus Foto
                                 </button>
                             </form>
+
+                            <!-- Button Edit -->
+                            <button id="editFotoButton" class="btn btn-warning btn-sm" onclick="">
+                                <i class="fas fa-edit"></i> Edit
+                            </button> --}}
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
+
+            <!-- Modal untuk Edit Foto -->
+        <div class="modal fade" id="editFotoModal" tabindex="-1" aria-labelledby="editFotoModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="editFotoForm" action="#" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editFotoModalLabel">Edit Foto</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="editGaleryId" name="galery_id" value="{{ $gallery->id }}">
+                            <div class="mb-3">
+                                <label for="editJudul" class="form-label">Judul</label>
+                                <input type="text" class="form-control" id="editJudul" name="judul" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editFile" class="form-label">Upload File</label>
+                                <input type="file" class="form-control" id="editFile" name="file" accept="image/*">
+
+                                <!-- Menampilkan file yang sudah diupload sebelumnya -->
+                                <small class="form-text text-muted" id="currentFile"></small>
+
+                                <x-input-error :messages="$errors->get('file')" class="mt-2" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
             <!-- Card Foto -->
-            <div class="row">
-                @foreach($fotos as $foto)
-                <div class="col-md-4 col-lg-3 mb-4">
-                    <div class="card shadow-sm h-100" onclick="showModal('{{ asset('uploads/galeri/' . $foto->file) }}', '{{ route('Vfoto.destroy', $foto->id) }}')">
-                        <img src="{{ asset('uploads/galeri/' . $foto->file) }}" class="card-img-top" alt="{{ $foto->judul }}" style="height: 180px; object-fit: cover;">
-                        <div class="card-body">
-                            <h6 class="card-title text-truncate">{{ $foto->judul }}</h6>
-                            {{-- <p class="text-muted mb-1">Album: {{ $gallery->judul }}</p> --}}
-                        </div>
-                    </div>
+<div class="row">
+    @foreach($fotos as $foto)
+    <div class="col-md-4 col-lg-3 mb-4">
+        <div class="card shadow-sm h-100">
+            <!-- Card Image -->
+            <img
+                src="{{ asset('uploads/galeri/' . $foto->file) }}"
+                class="card-img-top"
+                alt="{{ $foto->judul }}"
+                style="height: 180px; object-fit: cover; cursor: pointer;"
+                onclick="showImageModal('{{ asset('uploads/galeri/' . $foto->file) }}')">
+            <div class="card-body">
+                <!-- Card Title -->
+                <h6 class="card-title text-truncate">{{ $foto->judul }}</h6>
+
+                <!-- Button Group -->
+                <div class="d-flex justify-content-between mt-3">
+                    <!-- Button Edit -->
+                    <button class="btn btn-warning btn-sm" onclick="showEditModal('{{ $foto->id }}', '{{ $foto->judul }}', '{{ asset('uploads/galeri/' . $foto->file) }}', '{{ $foto->file }}')">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+
+                    <!-- Form Delete -->
+                    <form action="{{ route('Vfoto.destroy', $foto->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this photo?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </button>
+                    </form>
                 </div>
-                @endforeach
             </div>
+        </div>
+    </div>
+    @endforeach
+</div>
+
 
         </div>
     </main>
 
     <script>
-         function showModal(imageSrc, deleteUrl) {
-        // Menampilkan foto di modal
-        document.getElementById('modalImage').src = imageSrc;
+        function showImageModal(imageUrl) {
+        // Set the image source for the larger view modal
+        document.getElementById('modalImage').src = imageUrl;
 
-        // Mengatur action form delete dengan URL yang benar
-        document.getElementById('deleteFotoForm').action = deleteUrl;
-
-        // Menampilkan modal
-        var modal = new bootstrap.Modal(document.getElementById('viewFotoModal'));
-        modal.show();
+        // Show the view photo modal
+        var viewFotoModal = new bootstrap.Modal(document.getElementById('viewFotoModal'));
+        viewFotoModal.show();
     }
 
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     // Event listener untuk card klik
-        //     var cards = document.querySelectorAll('.card[data-img-url]');
-        //     cards.forEach(function(card) {
-        //         card.addEventListener('click', function() {
-        //             var imgUrl = card.getAttribute('data-img-url');
-        //             var deleteUrl = card.getAttribute('data-delete-url');
+    function showEditModal(id, title, imageUrl, fileName) {
+    // Set the title field in the edit modal
+    document.getElementById('editJudul').value = title;
 
-        //             // Set src image pada modal
-        //             document.getElementById('modalImage').src = imgUrl;
+    // Update the form action with the correct ID
+    document.getElementById('editFotoForm').action = `/Vfoto/${id}`;
 
-        //             // Set action form delete pada modal
-        //             document.getElementById('deleteFotoForm').action = deleteUrl;
-        //         });
-        //     });
-        // });
+    // Display the current file name and make it visible in the edit modal
+    const fileInfo = document.getElementById('currentFile');
+    fileInfo.innerHTML = `File saat ini: <a href="${imageUrl}" target="_blank">${fileName}</a>`;
+
+    // Show the edit photo modal
+    var editModal = new bootstrap.Modal(document.getElementById('editFotoModal'));
+    editModal.show();
+}
+
     </script>
 </x-app-layout>

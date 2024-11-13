@@ -1,6 +1,6 @@
 <x-app-layout>
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
-        <x-app.navbar />
+        {{-- <x-app.navbar /> --}}
         <div class="container-fluid py-4 px-5">
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -40,8 +40,15 @@
                                                 <td>{{ $index + 1 }}</td>
                                                 <td>{{ $kategori->judul }}</td>
                                                 <td>
-                                                    <button class="btn btn-sm btn-warning me-1">Edit</button> <!-- Tambahkan margin kanan -->
-                                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                                    <!-- Button Edit -->
+                                                    <button type="button" class="btn btn-sm btn-warning me-1" data-bs-toggle="modal" data-bs-target="#editKategoriModal{{ $kategori->id }}">Edit</button>
+
+                                                    <!-- Form Delete -->
+                                                    <form action="{{ route('Vkategori.destroy', $kategori->id) }}" method="POST" style="display: inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                    </form>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -78,5 +85,34 @@
                 </form>
             </div>
         </div>
+
+                <!-- Modal Edit Kategori -->
+                @foreach ($kategoris as $kategori)
+                <div class="modal fade" id="editKategoriModal{{ $kategori->id }}" tabindex="-1" aria-labelledby="editKategoriModalLabel{{ $kategori->id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <form action="{{ route('Vkategori.update', $kategori->id) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editKategoriModalLabel{{ $kategori->id }}">Edit Kategori</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="judul">Judul Kategori</label>
+                                        <input type="text" class="form-control" id="judul" name="judul" value="{{ $kategori->judul }}" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            @endforeach
+
     </main>
 </x-app-layout>

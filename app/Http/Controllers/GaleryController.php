@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Galery;
+use App\Models\Kategori;
 use App\Models\Posts;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,9 @@ class GaleryController extends Controller
 {
     // Ambil semua galeri dan sertakan data dari relasi 'post'
     $galleries = Galery::with('post')->get();
-    return view('Vgalery.index', compact('galleries'));
+    $categories = Kategori::all();
+
+    return view('Vgalery.index', compact('galleries', 'categories'));
 }
 
     // Menyimpan galeri baru
@@ -66,6 +69,32 @@ class GaleryController extends Controller
     }
 
     return redirect()->route('Vgalery.show', $id)->with('success', 'Foto berhasil di-upload.');
+}
+
+    public function update(Request $request, $id)
+{
+    $request->validate([
+        'judul' => 'required|string|max:255',
+        'position' => 'required|string',
+        'status' => 'required|boolean',
+    ]);
+
+    $gallery = Galery::findOrFail($id);
+    $gallery->update([
+        'judul' => $request->judul,
+        'position' => $request->position,
+        'status' => $request->status,
+    ]);
+
+    return redirect()->route('Vgalery.index')->with('success', 'Galeri berhasil diperbarui.');
+}
+
+    public function destroy($id)
+{
+    $gallery = Galery::findOrFail($id);
+    $gallery->delete();
+
+    return redirect()->route('Vgalery.index')->with('success', 'Galeri berhasil dihapus.');
 }
 
 }
