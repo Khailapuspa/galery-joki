@@ -144,7 +144,7 @@
                                     <label for="kategori_id" class="form-label">Kategori</label>
                                     <select class="form-select" name="kategori_id" required>
                                         @foreach($categories as $kategori)
-                                            <option value="{{ $kategori->id }}">{{ $kategori->name }}</option>
+                                            <option value="{{ $kategori->id }}">{{ $kategori->judul }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -153,16 +153,16 @@
                                     <textarea class="form-control" name="isi" rows="3" required></textarea>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="petugas_id" class="form-label">Petugas</label>
-                                    <input type="text" class="form-control" name="petugas_id" value="{{ auth()->user()->id }}" readonly>
+                                    <label for="users_id" class="form-label">Petugas</label>
+                                    <input type="text" class="form-control" name="users_id" value="{{ auth()->user()->id }}" readonly>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="status" class="form-label">Status</label>
+                                    <label for="users_id" class="form-label">Status</label>
                                     <select class="form-select" name="status" required>
                                         <option value="1">Aktif</option>
-                                        <option value="0">Tidak Aktif</option>
+                                        <option value="0" selected>Tidak Aktif</option> <!-- Default dipilih -->
                                     </select>
-                                </div>
+                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
@@ -178,6 +178,18 @@
         <x-app.footer />
     </main>
 
+
+    <script>
+        @if(session('success'))
+            // Menutup modal setelah berhasil submit
+            $('#createPostModal').modal('hide');
+
+            // Menampilkan alert sukses
+            setTimeout(function() {
+                $('.alert').alert('close');
+            }, 3000);
+        @endif
+    </script>
     <!-- Tambahkan CSS untuk tampilan card -->
     <style>
         .gallery-card {

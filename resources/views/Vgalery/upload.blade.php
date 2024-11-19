@@ -65,99 +65,86 @@
                     <div class="modal-body text-center">
                         <img id="modalImage" src="" alt="Foto Besar" class="img-fluid" style="max-width: 90%; max-height: 500px;">
                         <div class="d-flex justify-content-center mt-3">
-                            {{-- <!-- Form Delete -->
-                            <form id="deleteFotoForm" action="#" method="POST" class="me-2">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">
-                                    <i class="fas fa-trash-alt"></i> Hapus Foto
-                                </button>
-                            </form>
-
-                            <!-- Button Edit -->
-                            <button id="editFotoButton" class="btn btn-warning btn-sm" onclick="">
-                                <i class="fas fa-edit"></i> Edit
-                            </button> --}}
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+            </div>
 
 
             <!-- Modal untuk Edit Foto -->
-        <div class="modal fade" id="editFotoModal" tabindex="-1" aria-labelledby="editFotoModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form id="editFotoForm" action="#" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editFotoModalLabel">Edit Foto</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <input type="hidden" id="editGaleryId" name="galery_id" value="{{ $gallery->id }}">
-                            <div class="mb-3">
-                                <label for="editJudul" class="form-label">Judul</label>
-                                <input type="text" class="form-control" id="editJudul" name="judul" required>
+            <div class="modal fade" id="editFotoModal" tabindex="-1" aria-labelledby="editFotoModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form id="editFotoForm" action="#" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editFotoModalLabel">Edit Foto</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="mb-3">
-                                <label for="editFile" class="form-label">Upload File</label>
-                                <input type="file" class="form-control" id="editFile" name="file" accept="image/*">
+                            <div class="modal-body">
+                                <input type="hidden" id="editGaleryId" name="galery_id" value="{{ $gallery->id }}">
+                                <div class="mb-3">
+                                    <label for="editJudul" class="form-label">Judul</label>
+                                    <input type="text" class="form-control" id="editJudul" name="judul" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editFile" class="form-label">Upload File</label>
+                                    <input type="file" class="form-control" id="editFile" name="file" accept="image/*">
 
-                                <!-- Menampilkan file yang sudah diupload sebelumnya -->
-                                <small class="form-text text-muted" id="currentFile"></small>
+                                    <!-- Menampilkan file yang sudah diupload sebelumnya -->
+                                    <small class="form-text text-muted" id="currentFile"></small>
 
-                                <x-input-error :messages="$errors->get('file')" class="mt-2" />
+                                    <x-input-error :messages="$errors->get('file')" class="mt-2" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                        </div>
-                    </form>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
 
             <!-- Card Foto -->
-<div class="row">
-    @foreach($fotos as $foto)
-    <div class="col-md-4 col-lg-3 mb-4">
-        <div class="card shadow-sm h-100">
-            <!-- Card Image -->
-            <img
-                src="{{ asset('uploads/galeri/' . $foto->file) }}"
-                class="card-img-top"
-                alt="{{ $foto->judul }}"
-                style="height: 180px; object-fit: cover; cursor: pointer;"
-                onclick="showImageModal('{{ asset('uploads/galeri/' . $foto->file) }}')">
-            <div class="card-body">
-                <!-- Card Title -->
-                <h6 class="card-title text-truncate">{{ $foto->judul }}</h6>
+            <div class="row">
+                @foreach($fotos as $foto)
+                <div class="col-md-4 col-lg-3 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <!-- Card Image -->
+                        <img
+                            src="{{ asset('uploads/galeri/' . $foto->file) }}"
+                            class="card-img-top"
+                            alt="{{ $foto->judul }}"
+                            style="height: 180px; object-fit: cover; cursor: pointer;"
+                            onclick="showImageModal('{{ asset('uploads/galeri/' . $foto->file) }}')">
+                        <div class="card-body">
+                            <!-- Card Title -->
+                            <h6 class="card-title text-truncate">{{ $foto->judul }}</h6>
 
-                <!-- Button Group -->
-                <div class="d-flex justify-content-between mt-3">
-                    <!-- Button Edit -->
-                    <button class="btn btn-warning btn-sm" onclick="showEditModal('{{ $foto->id }}', '{{ $foto->judul }}', '{{ asset('uploads/galeri/' . $foto->file) }}', '{{ $foto->file }}')">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
+                            <!-- Button Group -->
+                            <div class="d-flex justify-content-between mt-3">
+                                <!-- Button Edit -->
+                                <button class="btn btn-warning btn-sm" onclick="showEditModal('{{ $foto->id }}', '{{ $foto->judul }}', '{{ asset('uploads/galeri/' . $foto->file) }}', '{{ $foto->file }}')">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
 
-                    <!-- Form Delete -->
-                    <form action="{{ route('Vfoto.destroy', $foto->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this photo?');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm">
-                            <i class="fas fa-trash-alt"></i> Delete
-                        </button>
-                    </form>
+                                <!-- Form Delete -->
+                                <form action="{{ route('Vfoto.destroy', $foto->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this photo?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash-alt"></i> Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                @endforeach
             </div>
-        </div>
-    </div>
-    @endforeach
-</div>
 
 
         </div>

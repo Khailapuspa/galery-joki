@@ -25,7 +25,9 @@ Route::get('/dashboard', function () {
 // Posts Routes
 Route::get('/Vposts', [PostsController::class, 'index'])->name('Vposts.index');
 Route::get('/Vposts/create', [PostsController::class, 'create'])->name('Vposts.create');
-Route::post('/posts', [PostsController::class, 'store'])->name('posts.store');
+Route::post('/Vposts', [PostsController::class, 'store'])->name('posts.store');
+Route::get('/Vpost/edit/{id}', [PostsController::class, 'edit'])->name('posts.edit');
+Route::put('/Vposts/{post}', [PostsController::class, 'update'])->name('posts.update');
 
 // Gallery Routes
 Route::get('/Vgalery', [GaleryController::class, 'index'])->name('Vgalery.index');
@@ -35,6 +37,10 @@ Route::post('/Vgalery/{id}/upload', [GaleryController::class, 'uploadPhoto'])->n
 Route::post('/Vgaleri/{id}/upload', [FotoController::class, 'store'])->name('Vgalery.uploadPhoto');
 Route::put('Vgalery/{id}', [GaleryController::class, 'update'])->name('Vgalery.update');
 Route::delete('Vgalery/{id}', [GaleryController::class, 'destroy'])->name('Vgalery.destroy');
+// Route::get('/galleries/{galery}/photos', [GalleryController::class, 'getPhotos']);
+// Route untuk mengambil foto berdasarkan galeri
+Route::get('/galleries/{galleryId}/photos', [GalleryController::class, 'getPhotosByGallery']);
+Route::get('/galleries/{galeryId}/photos', [GalleryController::class, 'getPhotos']);
 
 // Photo Routes
 Route::get('/Vfoto', [FotoController::class, 'index'])->name('Vfoto.index');

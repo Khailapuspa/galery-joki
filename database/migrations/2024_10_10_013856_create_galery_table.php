@@ -15,12 +15,24 @@ return new class extends Migration
         $table->id();
         $table->string('judul');
         $table->unsignedBigInteger('post_id')->nullable(); // Mengizinkan nilai NULL
+        $table->unsignedBigInteger('posts_id')->nullable()->after('judul');
         $table->foreign('posts_id')->references('id')->on('posts')->onDelete('cascade');
         $table->integer('position');
         $table->integer('status');
         $table->timestamps();
     });
 }
+
+public function posts()
+    {
+        return $this->belongsTo(Posts::class, 'posts_id');
+    }
+
+    // Jika ada relasi lain, seperti photos, tambahkan juga
+    public function photos()
+    {
+        return $this->hasMany(Foto::class, 'galery_id');
+    }
 
     /**
      * Reverse the migrations.

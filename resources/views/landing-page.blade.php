@@ -14,35 +14,38 @@
 </head>
 <body>
     <div class="edica-loader"></div>
-    <header class="edica-header edica-landing-header">
-        <div class="container-fluid">
-            <!-- Navbar dengan posisi absolute -->
-            <nav class="navbar navbar-expand-lg navbar-light" style="position: absolute; top: 0; left: 0; width: 100%; z-index: 2;">
+    <header class="edica-header edica-landing-header" style="position: relative; height: 100vh;">
+        <div class="container-fluid p-0">
+            <!-- Navbar transparan tanpa overlay gelap -->
+            <nav class="navbar navbar-expand-lg navbar-light" style="position: absolute; top: 0; left: 0; width: 100%; z-index: 2; background: transparent;">
                 <a class="navbar-brand" href="index.html" style="margin-left: 20px;">
                     <h2 style="display: flex; align-items: center; color: white; font-family: 'Poppins', sans-serif; font-weight: 600;">
                         <img src="assets/images/logo-smk.png" alt="SMKN 4 Bogor" style="max-width: 50px; height: 50px; margin-right: 15px;">
-                        SMKN 4 KOTA BOGOR
+                        Azurakip
                     </h2>
                 </a>
                 <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#edicaMainNav" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse justify-content-end" id="edicaMainNav">
-                    <ul class="navbar-nav mt-2 mt-lg-0" style="margin-right: 50px;">
-                        <li class="nav-item">
-                            <a href="{{ route('sign-in') }}" class="nav-link btn btn-outline-primary font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500" style="padding: 5px 15px; border-radius: 20px;">
-                                Login
-                            </a>
-                        </li>
-                    </ul>
-                </div>
             </nav>
 
-            <!-- Slider dengan gambar yang full-height -->
+            <!-- Slider dengan gambar full-height -->
             <div class="carousel-img-wrapper" style="height: 100vh; background-image: url('assets/images/Slider_11.jpg'); background-size: cover; background-position: center;">
+                <!-- Overlay untuk mempertegas teks -->
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4);"></div>
+                <!-- Konten di tengah -->
+                <div class="carousel-caption d-flex flex-column align-items-center justify-content-center" style="height: 100%; text-align: center; color: white; position: relative; z-index: 2; top: 0; bottom: 0; left: 0; right: 0;">
+                    <h1 class="display-4 font-weight-bold">Galeri Digital untuk Momen dan Kreativitas Tanpa Batas</h1>
+                    <p class="lead">Platform visual yang dirancang untuk mengabadikan momen-momen berharga serta memudahkan dokumentasi dan apresiasi.</p>
+                    <div>
+                        <a href="{{ route('sign-in') }}" class="btn btn-danger m-2">sign-in</a>
+                        <a href="{{ route('sign-up') }}" class="btn btn-success m-2">sign-up</a>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
+
 
 
     <main>

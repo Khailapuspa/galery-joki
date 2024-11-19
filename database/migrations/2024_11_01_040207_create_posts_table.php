@@ -12,13 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('posts', function (Blueprint $table) {
-            $table->id();
-            $table->string('judul');
-            $table->foreignId('kategori_id')->constrained()->onDelete('cascade');
-            $table->text('isi');
-            $table->foreignId('petugas_id')->constrained('users')->onDelete('cascade');
+            $table->id(); // Primary Key
+            $table->string('judul'); // Judul Post
+            $table->foreignId('kategori_id') // Foreign key ke tabel kategori
+                  ->constrained('kategori') // Nama tabel terkait
+                  ->onDelete('cascade'); // Hapus otomatis jika kategori dihapus
+            $table->text('isi'); // Konten Post
+            $table->foreignId('gallery_id')->nullable()->constrained('galeries')->onDelete('cascade');
+            $table->foreignId('user_id') // Foreign key ke tabel users
+                  ->constrained('users') // Nama tabel terkait
+                  ->onDelete('cascade'); // Hapus otomatis jika user dihapus
             $table->boolean('status')->default(1); // 1 = Aktif, 0 = Tidak Aktif
-            $table->timestamps();
+            $table->timestamps(); // Timestamps created_at dan updated_at
         });
     }
 

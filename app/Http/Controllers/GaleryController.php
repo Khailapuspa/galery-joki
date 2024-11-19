@@ -13,7 +13,7 @@ class GaleryController extends Controller
     public function index()
 {
     // Ambil semua galeri dan sertakan data dari relasi 'post'
-    $galleries = Galery::with('post')->get();
+    $galleries = Galery::with('posts')->get();
     $categories = Kategori::all();
 
     return view('Vgalery.index', compact('galleries', 'categories'));
@@ -44,6 +44,28 @@ class GaleryController extends Controller
     $gallery = Galery::with('photos')->findOrFail($id);
     $fotos = $gallery->photos; // Ambil foto yang terkait dengan galeri ini
     return view('Vgalery.upload', compact('gallery', 'fotos'));
+}
+
+// Controller untuk mengembalikan daftar foto berdasarkan galeri
+public function getPhotosByGallery($galleryId)
+{
+    $gallery = Gallery::find($galleryId);
+    if (!$gallery) {
+        return response()->json([]);
+    }
+
+    $photos = $gallery->photos; // Asumsi Anda sudah membuat relasi di model Gallery
+    return response()->json($photos);
+}
+
+
+public function getPhotos($galeryId)
+{
+    $gallery = Gallery::find($galeryId);
+    if ($gallery) {
+        return response()->json($gallery->photos);
+    }
+    return response()->json([]);
 }
 
     public function uploadPhoto(Request $request, $id)

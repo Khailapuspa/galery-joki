@@ -10,16 +10,15 @@ class Galery extends Model
     protected $table = 'galery';
     protected $fillable = [
         'judul',
-        'post_id',
+        'posts_id',
         'position',
         'status',
     ];
 
-    public function post()
-    {
-        return $this->belongsTo(Posts::class, 'post_id');
-    }
-
+    public function posts()
+{
+    return $this->hasMany(Posts::class, 'galery_id');
+}
 
     public function photos()
     {

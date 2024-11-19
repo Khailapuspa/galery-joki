@@ -8,10 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Foto extends Model
 {
     protected $table = 'foto';
-    protected $fillable = ['galery_id', 'file', 'judul'];
+    protected $fillable = ['galery_id', 'posts_id', 'file', 'judul'];
 
-    public function gallery()
+    public function galery()
     {
-        return $this->belongsTo(Gallery::class);
+        return $this->belongsTo(Galery::class); // Relasi Foto dengan Galery
+    }
+
+    public function post()
+    {
+        return $this->belongsTo(Post::class, 'posts_id');  // Relasi Foto dengan Post
     }
 }
