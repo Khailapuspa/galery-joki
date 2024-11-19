@@ -28,6 +28,7 @@ Route::get('/Vposts/create', [PostsController::class, 'create'])->name('Vposts.c
 Route::post('/Vposts', [PostsController::class, 'store'])->name('posts.store');
 Route::get('/Vpost/edit/{id}', [PostsController::class, 'edit'])->name('posts.edit');
 Route::put('/Vposts/{post}', [PostsController::class, 'update'])->name('posts.update');
+Route::get('/Vposts/{id}', [PostsController::class, 'show'])->name('Vposts.show');
 
 // Gallery Routes
 Route::get('/Vgalery', [GaleryController::class, 'index'])->name('Vgalery.index');

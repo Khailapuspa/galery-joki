@@ -21,46 +21,50 @@
                     <div class="row">
                         @foreach($posts as $post)
                             <div class="col-md-4 mb-4">
-                                <!-- Card Post -->
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{ $post->judul }}</h5>
-                                        <p class="card-text">{{ $post->isi }}</p>
-                                    <div class="card">
-                                        <!-- Menampilkan Foto Berdasarkan foto_id -->
-                                        @if($post->foto)
-                                            <img src="{{ asset('uploads/galeri/' . $post->foto->file) }}" class="card-img-top" alt="{{ $post->foto->judul }}">
-                                        @else
-                                            <img src="{{ asset('storage/default.jpg') }}" class="card-img-top" alt="No image available">
-                                        @endif
-
-                                        <div class="card-body">
+                                <div class="card h-100 border border-dark shadow-sm".KJHJM >
+                                    <!-- Link ke Detail Post -->
+                                    <a href="{{ route('Vposts.show', $post->id) }}" class="text-decoration-none text-dark">
+                                        <div class="card-body text-center">
                                             <h5 class="card-title">{{ $post->judul }}</h5>
-                                            <p class="card-text">{{ $post->isi }}</p>
-
-                                            <!-- Button Status Aktif/Tidak Aktif -->
-                                            <div class="d-flex justify-content-between mt-3">
-                                                @if($post->status == 1)
-                                                    <button class="btn btn-success btn-sm">
-                                                        Aktif (1)
-                                                    </button>
-                                                @else
-                                                    <button class="btn btn-secondary btn-sm">
-                                                        Tidak Aktif (0)
-                                                    </button>
-                                                @endif
-
-                                                <!-- Button Edit -->
-                                                <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editPostModal-{{ $post->id }}">
-                                                    <i class="fas fa-edit"></i> Edit
-                                                </button>
-                                            </div>
                                         </div>
+                                    </a>
+
+                                    <!-- Garis Pemisah -->
+                                    <hr class="card-divider">
+
+                                    <!-- Gambar Post -->
+                                    <img src="{{ $post->foto ? asset('uploads/galeri/' . $post->foto->file) : asset('storage/default.jpg') }}"
+                                         class="card-img-top img-fluid"
+                                         alt="{{ $post->foto->judul ?? 'No Image' }}"
+                                         style="height: 200px; object-fit: cover;">
+
+                                    <!-- Card Body -->
+                                    <div class="card-body">
+                                        <h3>{{ $post->judul }}</h3>
+                                        <p>{{ $post->isi }}</p>
+                                    </div>
+
+                                    <!-- Bagian Footer untuk Tombol -->
+                                    <div class="card-footer text-center">
+                                        <!-- Tombol Edit -->
+                                        <button class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editPostModal{{ $post->id }}">Edit</button>
+
+                                        <!-- Tombol Status -->
+                                        <form action="{{ route('posts.update', $post->id) }}" method="POST" style="display: inline-block;">
+                                            @csrf
+                                            @method('PUT')
+                                            <input type="hidden" name="status" value="{{ $post->status ? 0 : 1 }}">
+                                            <button type="submit" class="btn btn-sm {{ $post->status ? 'btn-success' : 'btn-secondary' }}">
+                                                {{ $post->status ? 'Aktif' : 'Tidak Aktif' }}
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         @endforeach
                     </div>
+
+
                 </div>
             </div>
         </div>

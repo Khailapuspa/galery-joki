@@ -50,6 +50,11 @@ class PostsController extends Controller
     return redirect()->route('Vposts.index')->with('success', 'Post berhasil dibuat!');
 }
 
+public function show($id)
+{
+    $posts = Posts::with('foto')->findOrFail($id); // Mengambil post beserta foto terkait
+    return view('Vposts.detail', compact('posts')); // Mengarahkan ke view 'detail'
+}
 
     // Menampilkan form edit untuk post tertentu
     public function edit($id)
@@ -73,7 +78,7 @@ class PostsController extends Controller
     $post = Posts::findOrFail($id);
     $post->update($validated);
 
-    return redirect()->route('posts.index')->with('success', 'Post berhasil diperbarui!');
+    return redirect()->route('Vposts.index')->with('success', 'Post berhasil diperbarui!');
 }
 
     // Menghapus post tertentu
