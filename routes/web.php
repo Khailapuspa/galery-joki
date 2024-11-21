@@ -11,6 +11,7 @@ use App\Http\Controllers\GaleryController;
 use App\Http\Controllers\FotoController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\DashboardController;
 
 // Landing Page
 Route::get('/', function () {
@@ -18,9 +19,9 @@ Route::get('/', function () {
 })->name('landing-page');
 
 // Dashboard
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard')->middleware('auth');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->name('dashboard')
+    ->middleware('auth');
 
 // Posts Routes
 Route::get('/Vposts', [PostsController::class, 'index'])->name('Vposts.index');
