@@ -39,6 +39,7 @@
                 </a>
             </li>
 
+            @if(str_ends_with(auth()->user()->email, '@corporateui.com'))
             {{-- Sidebar Kategori --}}
             <li class="nav-item">
                 <a class="nav-link {{ is_current_route('Vkategori.index') ? 'active' : '' }}" href="{{ route('Vkategori.index') }}">
@@ -128,6 +129,7 @@
                     <span class="nav-link-text ms-1">User Management</span>
                 </a>
             </li>
+            @endif
 
         </ul>
     </div>
