@@ -7982,4 +7982,19 @@ label {
   padding-bottom: 90px;
   text-align: center; }
 
+  .fas.fa-heart, .far.fa-heart {
+    cursor: pointer;
+    transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.far.fa-heart:hover {
+    color: red; /* Warna hati saat hover */
+    border-color: red;
+}
+
+.fas.fa-heart:hover {
+    color: #ff4d4d; /* Warna hati penuh saat hover */
+}
+
+
 /*# sourceMappingURL=style.css.map */

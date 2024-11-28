@@ -35,13 +35,50 @@
                                     <p class="card-text text-muted text-truncate">{{ Str::limit($post->isi, 100, '...') }}</p>
                                 </div>
 
-                                <!-- Footer Card -->
-                                {{-- <div class="card-footer bg-transparent border-0 text-center">
-                                    <a href="{{ route('Vposts.show', $post->id) }}" class="btn btn-sm btn-outline-primary">
-                                        <i class="fas fa-eye"></i> View Post
-                                    </a>
-                                </div> --}}
+                                <!-- Tombol Like / Unlike -->
+                                <form action="{{ route('posts.like', $post->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @if(Auth::user()->likes->contains($post))
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            <i class="fas fa-thumbs-down"></i> Unlike
+                                        </button>
+                                    @else
+                                        <button type="submit" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-thumbs-up"></i> Like
+                                        </button>
+                                    @endif
+
+                                    <span class="ms-2 text-muted" style="font-size: 1rem;">
+                                        {{ $post->likes->count() }} likes
+                                    </span>
+                                </form>
+
+                                <!-- Formulir Komentar -->
+                                <form action="{{ route('posts.comment', $post->id) }}" method="POST">
+                                    @csrf
+                                    <div class="form-group">
+                                        <textarea name="isi_komentar" class="form-control" rows="3" placeholder="Add a comment..."></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-sm btn-outline-success mt-2">Comment</button>
+                                </form>
+
+                               <!-- Tombol Lihat Komentar dengan Jumlah Komentar -->
+                                <button class="btn btn-sm btn-outline-secondary mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#comments-{{ $post->id }}" aria-expanded="false" aria-controls="comments-{{ $post->id }}">
+                                    Lihat Komentar ({{ $post->comments->count() }})
+                                </button>
+                                <div class="collapse mt-3" id="comments-{{ $post->id }}">
+                                    @foreach($post->comments as $comment)
+                                        <div class="mb-2">
+                                            <strong>
+                                                {{ $comment->user->name ?? 'Unknown User' }} <!-- Jika relasi benar, nama user akan muncul -->
+                                            </strong>
+                                            <p>{{ $comment->isi_komentar }}</p>
+                                        </div>
+                                    @endforeach
+                                </div>
+
                             </div>
+
                         </div>
 
                         <!-- Modal Foto -->

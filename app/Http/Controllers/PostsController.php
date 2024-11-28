@@ -56,6 +56,23 @@ public function show($id)
     return view('Vposts.detail', compact('posts')); // Mengarahkan ke view 'detail'
 }
 
+public function like(Posts $post)
+{
+    $user = auth()->user();
+
+    if ($user->likes->contains($post)) {
+        // Jika sudah like, maka unlike (hapus like)
+        $user->likes()->detach($post);
+    } else {
+        // Jika belum like, maka like (tambah like)
+        $user->likes()->attach($post);
+    }
+
+    return back();
+}
+
+
+
     // Menampilkan form edit untuk post tertentu
     public function edit($id)
 {

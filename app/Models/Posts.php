@@ -27,4 +27,14 @@ class Posts extends Model
     {
         return $this->belongsTo(Foto::class, 'foto_id');
     }
+
+    public function likes()
+    {
+        return $this->belongsToMany(User::class, 'likes', 'posts_id', 'users_id')->withTimestamps();
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'posts_id', 'id');
+    }
 }

@@ -11,11 +11,13 @@ use App\Http\Controllers\FotoController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CommentController;
 
 // Landing Page
 Route::get('/', function () {
     return view('landing-page');
 })->name('landing-page');
+Route::get('/landing-page', [LandingPageController::class, 'showTrending']);
 
 // Dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])
@@ -28,7 +30,8 @@ Route::get('/Vposts/create', [PostsController::class, 'create'])->name('Vposts.c
 Route::post('/Vposts', [PostsController::class, 'store'])->name('posts.store')->middleware('checkEmailDomain');
 Route::get('/Vpost/edit/{id}', [PostsController::class, 'edit'])->name('posts.edit')->middleware('checkEmailDomain');
 Route::put('/Vposts/{post}', [PostsController::class, 'update'])->name('posts.update')->middleware('checkEmailDomain');
-Route::get('/Vposts/{id}', [PostsController::class, 'show'])->name('Vposts.show')->middleware('checkEmailDomain');
+Route::get('/Vposts/{id}', [PostsController::class, 'show'])->name('Vposts.show');
+Route::post('/posts/{post}/like', [PostsController::class, 'like'])->name('posts.like');
 
 // Gallery Routes
 Route::get('/Vgalery', [GaleryController::class, 'index'])->name('Vgalery.index')->middleware('checkEmailDomain');
@@ -52,6 +55,9 @@ Route::get('/Vkategori', [KategoriController::class, 'index'])->name('Vkategori.
 Route::post('/Vkategori', [KategoriController::class, 'store'])->name('Vkategori.store')->middleware('checkEmailDomain');
 Route::put('/Vkategori/{id}', [KategoriController::class, 'update'])->name('Vkategori.update')->middleware('checkEmailDomain');
 Route::delete('/Vkategori/{id}', [KategoriController::class, 'destroy'])->name('Vkategori.destroy')->middleware('checkEmailDomain');
+
+// Komentar
+Route::post('posts/{post}/comment', [CommentController::class, 'store'])->name('posts.comment');
 
 // Authenticated User Pages
 Route::middleware(['auth', 'checkEmailDomain'])->group(function () {
